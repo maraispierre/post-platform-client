@@ -1,0 +1,30 @@
+<div class="flex h-screen justify-center items-center">
+  <mat-card class="max-w-min max-h-screen">
+    <h1 class="text-blue-900 text-center">REGISTER</h1>
+
+    <form (ngSubmit)="register()"  class="flex flex-col space-y-7" ngNativeValidate>
+      <p class="text-red-500">{{errorMessage}}</p>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput type="email" placeholder="test@test.fr" [formControl]="email" required>
+        <mat-error *ngIf="email.invalid">{{getErrorEmail()}}</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput type="password" [formControl]="password" required>
+        <mat-error *ngIf="password.invalid">{{getErrorPassword()}}</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Confirm Password</mat-label>
+        <input matInput type="password" [formControl]="confirmPassword" required>
+        <mat-error *ngIf="confirmPassword.invalid">{{getErrorConfirmPassword()}}</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit">Register</button>
+
+      <a mat-button color="primary" routerLink="/login" routerLinkActive="active">Login</a>
+    </form>
+  </mat-card>
+
+
+</div>
