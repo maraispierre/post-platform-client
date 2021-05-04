@@ -1,8 +1,6 @@
 import { AuthActionType, All } from './auth.actions';
 
 export interface State {
-  isAuthenticated: boolean;
-
   accessToken: string | null;
 
   errorLoginMessage: string | null;
@@ -11,7 +9,6 @@ export interface State {
 }
 
 export const initialState: State = {
-  isAuthenticated: false,
   accessToken: null,
   errorLoginMessage: null,
   errorRegisterMessage: null,
@@ -22,7 +19,6 @@ export function reducer(state = initialState, action: All): State {
     case AuthActionType.LOGIN_SUCCESS: {
       return {
         ...state,
-        isAuthenticated: true,
         accessToken: action.accessToken.token,
         errorLoginMessage: null,
       };

@@ -18,9 +18,9 @@ import { AccessToken } from '../../models/access-token';
 @Injectable()
 export class AuthEffects {
   constructor(
-    private actions: Actions,
-    private authService: AuthService,
-    private router: Router
+    private readonly actions: Actions,
+    private readonly authService: AuthService,
+    private readonly router: Router
   ) {}
 
   // @ts-ignore

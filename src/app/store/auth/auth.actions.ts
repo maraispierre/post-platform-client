@@ -10,7 +10,6 @@ export enum AuthActionType {
   REGISTER_SUCCESS = '[AUTH] Register Success',
   REGISTER_FAILURE = '[AUTH] Register Failure',
   LOGOUT = '[AUTH] Logout',
-  GET_STATUS = '[AUTH] GetStatus',
 }
 
 export class LoginAction implements Action {
@@ -47,10 +46,6 @@ export class LogoutAction implements Action {
   readonly type = AuthActionType.LOGOUT;
 }
 
-export class GetStatus implements Action {
-  readonly type = AuthActionType.GET_STATUS;
-}
-
 export type All =
   | LoginAction
   | LoginSuccessAction
@@ -58,5 +53,4 @@ export type All =
   | RegisterAction
   | RegisterSuccessAction
   | RegisterFailureAction
-  | LogoutAction
-  | GetStatus;
+  | LogoutAction;
