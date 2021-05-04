@@ -35,7 +35,7 @@ export class RegisterAction implements Action {
 
 export class RegisterSuccessAction implements Action {
   readonly type = AuthActionType.REGISTER_SUCCESS;
-  constructor() {}
+  constructor(public readonly accessToken: AccessToken) {}
 }
 
 export class RegisterFailureAction implements Action {

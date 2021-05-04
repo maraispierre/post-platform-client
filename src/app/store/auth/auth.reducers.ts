@@ -5,13 +5,16 @@ export interface State {
 
   accessToken: string | null;
 
-  errorMessage: string | null;
+  errorLoginMessage: string | null;
+
+  errorRegisterMessage: string | null;
 }
 
 export const initialState: State = {
   isAuthenticated: false,
   accessToken: null,
-  errorMessage: null,
+  errorLoginMessage: null,
+  errorRegisterMessage: null,
 };
 
 export function reducer(state = initialState, action: All): State {
@@ -21,25 +24,25 @@ export function reducer(state = initialState, action: All): State {
         ...state,
         isAuthenticated: true,
         accessToken: action.accessToken.token,
-        errorMessage: null,
+        errorLoginMessage: null,
       };
     }
     case AuthActionType.LOGIN_FAILURE: {
       return {
         ...state,
-        errorMessage: action.error.message,
+        errorLoginMessage: action.error.message,
       };
     }
     case AuthActionType.REGISTER_SUCCESS: {
       return {
         ...state,
-        errorMessage: null,
+        errorRegisterMessage: null,
       };
     }
     case AuthActionType.REGISTER_FAILURE: {
       return {
         ...state,
-        errorMessage: action.error.message,
+        errorRegisterMessage: action.error.message,
       };
     }
     case AuthActionType.LOGOUT: {

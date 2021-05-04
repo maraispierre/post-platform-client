@@ -12,7 +12,7 @@ import {
   RegisterSuccessAction,
   RegisterFailureAction,
 } from './auth.actions';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { AccessToken } from '../../models/access-token';
 
 @Injectable()
@@ -68,7 +68,9 @@ export class AuthEffects {
       ofType(AuthActionType.REGISTER),
       exhaustMap((action: RegisterAction) =>
         this.authService.register(action.credentials).pipe(
-          map(() => new RegisterSuccessAction()),
+          map(
+            (accessToken: AccessToken) => new RegisterSuccessAction(accessToken)
+          ),
           catchError((error: Error) => of(new RegisterFailureAction(error)))
         )
       )
@@ -80,8 +82,9 @@ export class AuthEffects {
     () => {
       return this.actions.pipe(
         ofType(AuthActionType.REGISTER_SUCCESS),
-        tap(() => {
-          this.router.navigateByUrl('/login');
+        tap((action: RegisterSuccessAction) => {
+          localStorage.setItem('accessToken', action.accessToken.token);
+          this.router.navigateByUrl('/');
         })
       );
     },
@@ -101,7 +104,7 @@ export class AuthEffects {
     () => {
       return this.actions.pipe(
         ofType(AuthActionType.LOGOUT),
-        tap((user) => {
+        tap(() => {
           localStorage.removeItem('accessToken');
           this.router.navigateByUrl('/login');
         })

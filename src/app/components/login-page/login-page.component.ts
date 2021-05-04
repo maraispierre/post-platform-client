@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AuthActionType, LoginAction } from '../../store/auth/auth.actions';
+import { LoginAction } from '../../store/auth/auth.actions';
 import { Credentials } from '../../models/credentials';
 import { AppState, selectAuthState } from '../../store/app.states';
 
@@ -12,54 +17,64 @@ import { AppState, selectAuthState } from '../../store/app.states';
   styleUrls: ['./login-page.component.scss'],
 })
 export class LoginPageComponent implements OnInit {
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password = new FormControl('', [
-    Validators.required,
-    Validators.minLength(8),
-  ]);
+  form: FormGroup;
   getState: Observable<any>;
   errorMessage: string | null;
+  hidePassword: boolean;
 
-  constructor(private readonly store: Store<AppState>) {
+  constructor(
+    private readonly store: Store<AppState>,
+    private formBuilder: FormBuilder
+  ) {
     this.getState = store.select(selectAuthState);
     this.errorMessage = null;
+    this.hidePassword = true;
+    this.form = formBuilder.group({
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+      ]),
+    });
   }
 
   ngOnInit(): void {
     this.getState.subscribe((state) => {
-      this.errorMessage = state.errorMessage;
+      this.errorMessage = state.errorLoginMessage;
     });
   }
 
   getErrorEmail(): string {
-    if (this.email.hasError('required')) {
+    if (this.form.get('email')?.hasError('required')) {
       return 'Email is required';
     }
 
-    if (this.email.hasError('email')) {
+    if (this.form.get('email')?.hasError('email')) {
       return 'Email is not valid';
     }
     return '';
   }
 
   getErrorPassword(): string {
-    if (this.password.hasError('required')) {
+    if (this.form.get('password')?.hasError('required')) {
       return 'Password is required';
     }
 
-    if (this.password.hasError('minlength')) {
+    if (this.form.get('password')?.hasError('minlength')) {
       return 'Password is too short. Minimum 8 characters';
     }
     return '';
   }
-
-  isFormValid(): boolean {
-    return this.email.valid && this.password.valid;
-  }
-
   login(): void {
-    this.store.dispatch(
-      new LoginAction(new Credentials(this.email.value, this.password.value))
-    );
+    if (this.form.valid) {
+      this.store.dispatch(
+        new LoginAction(
+          new Credentials(
+            this.form.get('email')?.value,
+            this.form.get('password')?.value
+          )
+        )
+      );
+    }
   }
 }
