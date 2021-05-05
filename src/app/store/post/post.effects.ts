@@ -28,7 +28,6 @@ export class PostEffects {
       exhaustMap((action: PublishAction) =>
         this.postService.publish(action.post).pipe(
           map((post: Post) => {
-            console.log('effect Publish');
             return new PublishSuccessAction(post);
           }),
           catchError((error: Error) => {
@@ -44,7 +43,7 @@ export class PostEffects {
     return this.actions.pipe(
       ofType(PostActionType.PUBLISH_SUCCESS),
       map(() => {
-        return new DisplayAction();
+        return new DisplayAction(0, null);
       })
     );
   });
@@ -61,8 +60,8 @@ export class PostEffects {
   Display = createEffect(() => {
     return this.actions.pipe(
       ofType(PostActionType.DISPLAY),
-      exhaustMap(() =>
-        this.postService.display().pipe(
+      exhaustMap((action: DisplayAction) =>
+        this.postService.display(action.page, action.cursor).pipe(
           map((posts: Post[]) => new DisplaySuccessAction(posts)),
           catchError((error: Error) => of(new DisplayFailureAction(error)))
         )

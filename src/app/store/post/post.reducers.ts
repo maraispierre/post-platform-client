@@ -3,12 +3,14 @@ import { Post } from '../../models/post';
 
 export interface State {
   posts: Post[];
-  errorMessage: string | null;
+  page: number;
+  cursor: number | null;
 }
 
 export const initialState: State = {
   posts: [],
-  errorMessage: null,
+  page: 0,
+  cursor: null,
 };
 
 export function reducer(state = initialState, action: All): State {
@@ -16,24 +18,27 @@ export function reducer(state = initialState, action: All): State {
     case PostActionType.PUBLISH_SUCCESS: {
       return {
         ...state,
+        page: 0,
+        posts: [],
       };
     }
     case PostActionType.PUBLISH_FAILURE: {
       return {
         ...state,
-        errorMessage: 'An error occurs',
       };
     }
     case PostActionType.DISPLAY_SUCCESS: {
+      const statePosts = state.posts.concat(action.posts);
       return {
         ...state,
-        posts: action.posts,
+        posts: statePosts,
+        page: state.page + 1,
+        cursor: statePosts.length > 0 ? statePosts[0].id : null,
       };
     }
     case PostActionType.DISPLAY_FAILURE: {
       return {
         ...state,
-        errorMessage: 'An error occurs',
       };
     }
     default: {

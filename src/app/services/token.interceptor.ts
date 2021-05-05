@@ -9,7 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { AccessToken } from '../models/access-token';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
@@ -45,7 +45,8 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((response: any) => {
         if (response instanceof HttpErrorResponse && response.status === 401) {
-          localStorage.removeItem('token');
+          console.log('test');
+          localStorage.removeItem('accessToken');
           this.router.navigateByUrl('/login');
         }
         throw response.error;

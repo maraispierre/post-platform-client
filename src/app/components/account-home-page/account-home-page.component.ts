@@ -17,21 +17,27 @@ export class AccountHomePageComponent implements OnInit {
   errorMessage: string | null;
   newPostContent: FormControl;
   posts: Post[];
+  page: number;
+  cursor: number | null;
 
   constructor(private readonly store: Store<AppState>) {
     this.getState = store.select(selectPostState);
     this.errorMessage = null;
     this.newPostContent = new FormControl('', [Validators.required]);
     this.posts = [];
+    this.page = 0;
+    this.cursor = null;
   }
 
   ngOnInit(): void {
     this.getState.subscribe((state) => {
       this.errorMessage = state.errorMessage;
       this.posts = state.posts;
+      this.page = state.page;
+      this.cursor = state.cursor;
     });
 
-    this.store.dispatch(new DisplayAction());
+    this.store.dispatch(new DisplayAction(this.page, this.cursor));
   }
 
   publish(): void {
@@ -44,5 +50,9 @@ export class AccountHomePageComponent implements OnInit {
 
   logout(): void {
     this.store.dispatch(new LogoutAction());
+  }
+
+  loadMore(): void {
+    this.store.dispatch(new DisplayAction(this.page, this.cursor));
   }
 }

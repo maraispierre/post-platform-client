@@ -41,6 +41,9 @@ export class RegisterPageComponent implements OnInit {
         password: new FormControl('', [
           Validators.required,
           Validators.minLength(8),
+          Validators.pattern(
+            '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$'
+          ),
         ]),
         confirmPassword: new FormControl(''),
       },
@@ -83,6 +86,10 @@ export class RegisterPageComponent implements OnInit {
     if (this.form.get('password')?.hasError('minlength')) {
       return 'Password is too short. Minimum 8 characters';
     }
+
+    if (this.form.get('password')?.hasError('pattern')) {
+      return 'Password must contain at least one uppercase letter, one lowercase letter and one number';
+    }
     return '';
   }
 
@@ -112,13 +119,8 @@ class ConfirmPasswordErrorStateMatcher implements ErrorStateMatcher {
     control: FormControl | null,
     form: FormGroupDirective | NgForm | null
   ): boolean {
-    const invalidCtrl = !!(control?.invalid && control?.parent?.dirty);
-    const invalidParent = !!(
-      control?.parent?.invalid &&
-      control?.parent?.dirty &&
-      control?.parent?.hasError('mismatched')
-    );
-
-    return invalidCtrl || invalidParent;
+    return control?.parent?.hasError('mismatched') !== undefined
+      ? control?.parent?.hasError('mismatched')
+      : false;
   }
 }

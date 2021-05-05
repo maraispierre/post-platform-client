@@ -14,8 +14,13 @@ export class PostService {
     return this.http.post<Post>(`${this.BASE_URL}/publish`, post);
   }
 
-  display(): Observable<Post[]> {
-    console.log('service');
-    return this.http.get<Post[]>(`${this.BASE_URL}/display`);
+  display(page: number, cursor: number | null = null): Observable<Post[]> {
+    if (cursor === null) {
+      return this.http.get<Post[]>(`${this.BASE_URL}/display/${page}`);
+    }
+
+    return this.http.get<Post[]>(
+      `${this.BASE_URL}/display/${page}?cursor=${cursor}`
+    );
   }
 }

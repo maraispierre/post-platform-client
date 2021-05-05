@@ -27,7 +27,10 @@ export class PublishFailureAction implements Action {
 
 export class DisplayAction implements Action {
   readonly type = PostActionType.DISPLAY;
-  constructor() {}
+  constructor(
+    public readonly page: number,
+    public readonly cursor: number | null
+  ) {}
 }
 
 export class DisplaySuccessAction implements Action {

@@ -30,6 +30,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { PostService } from './services/post.service';
 import { PostEffects } from './store/post/post.effects';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { PostEffects } from './store/post/post.effects';
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
+    InfiniteScrollModule,
   ],
   providers: [
     {
