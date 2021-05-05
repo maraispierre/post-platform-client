@@ -23,7 +23,10 @@ export class AccountHomePageComponent implements OnInit {
   constructor(private readonly store: Store<AppState>) {
     this.getState = store.select(selectPostState);
     this.errorMessage = null;
-    this.newPostContent = new FormControl('', [Validators.required]);
+    this.newPostContent = new FormControl('', [
+      Validators.required,
+      Validators.maxLength(80),
+    ]);
     this.posts = [];
     this.page = 0;
     this.cursor = null;
@@ -40,11 +43,25 @@ export class AccountHomePageComponent implements OnInit {
     this.store.dispatch(new DisplayAction(this.page, this.cursor));
   }
 
+  getPostContentError(): string {
+    if (this.newPostContent.hasError('required')) {
+      return 'Content is required';
+    }
+
+    if (this.newPostContent.hasError('maxlength')) {
+      return 'Content does not exceed 80 characters';
+    }
+
+    return '';
+  }
+
   publish(): void {
     if (this.newPostContent.valid) {
       this.store.dispatch(
         new PublishAction(new Post(this.newPostContent.value))
       );
+      this.newPostContent.reset();
+      this.newPostContent.setErrors(null);
     }
   }
 

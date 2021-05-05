@@ -16,11 +16,11 @@ export class PostService {
 
   display(page: number, cursor: number | null = null): Observable<Post[]> {
     if (cursor === null) {
-      return this.http.get<Post[]>(`${this.BASE_URL}/display/${page}`);
+      return this.http.get<Post[]>(`${this.BASE_URL}/display?page=${page}`);
     }
 
     return this.http.get<Post[]>(
-      `${this.BASE_URL}/display/${page}?cursor=${cursor}`
+      `${this.BASE_URL}/display?page=${page}&cursor=${cursor}`
     );
   }
 }

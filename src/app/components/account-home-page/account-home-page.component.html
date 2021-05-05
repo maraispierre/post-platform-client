@@ -4,24 +4,36 @@
   </button>
 </mat-toolbar>
 
-<form (ngSubmit)="publish()" class="flex flex-col space-y-7">
-  <p class="text-red-500">{{errorMessage}}</p>
-  <mat-form-field>
-    <mat-label>New Post</mat-label>
-    <input matInput type="text" placeholder="Content" [formControl]="newPostContent" required>
-    <mat-error *ngIf="this.newPostContent.invalid">Post content is required</mat-error>
-  </mat-form-field>
+<div class="flex flex-row justify-center">
+  <mat-card class="w-80">
+    <h1>Publish</h1>
+    <form (ngSubmit)="publish()" class="flex flex-col">
+      <p class="text-red-500">{{errorMessage}}</p>
+      <mat-form-field>
+        <mat-label>Publish a new post</mat-label>
+        <textarea matInput placeholder="Content" [formControl]="newPostContent" rows="4"></textarea>
+        <mat-error *ngIf="this.newPostContent.invalid">{{getPostContentError()}}</mat-error>
+      </mat-form-field>
 
-  <button mat-raised-button color="primary" type="submit">Publish</button>
-</form>
+      <button mat-raised-button color="primary" type="submit">
+        Publish
+      </button>
 
+    </form>
+  </mat-card>
+
+</div>
 
 <div
-  class="search-results"
+  class="flex flex-col items-center space-y-3 mt-3"
   infiniteScroll
   [infiniteScrollDistance]="2"
   [infiniteScrollThrottle]="50"
   (scrolled)="loadMore()"
 >
-  <div class="h-64" *ngFor="let post of posts">{{ post.content }}</div>
+  <div *ngFor="let post of posts">
+    <mat-card class="h-40 w-80 flex flex-row justify-center">
+      <p class="text-lg px-3 break-words text-justify">{{ post.content }}</p>
+    </mat-card>
+  </div>
 </div>
