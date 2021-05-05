@@ -65,6 +65,13 @@ export class AccountHomePageComponent implements OnInit {
     }
   }
 
+  getUsername(email: string | undefined): string {
+    if (email === undefined) {
+      return '@';
+    }
+    return '@' + email.substring(0, email.indexOf('@'));
+  }
+
   logout(): void {
     this.store.dispatch(new LogoutAction());
   }

@@ -6,7 +6,7 @@
 
 <div class="flex flex-row justify-center">
   <mat-card class="w-80">
-    <h1>Publish</h1>
+    <h1 class="text-blue-800 font-bold">Publish</h1>
     <form (ngSubmit)="publish()" class="flex flex-col">
       <p class="text-red-500">{{errorMessage}}</p>
       <mat-form-field>
@@ -33,7 +33,8 @@
 >
   <div *ngFor="let post of posts">
     <mat-card class="h-40 w-80 flex flex-row justify-center">
-      <p class="text-lg px-3 break-words text-justify">{{ post.content }}</p>
+      <p class="text-sm font-semibold text-blue-800 px-3 break-words text-justify">{{ getUsername(post.author?.email) }}</p>
+      <p class="text-lg px-3 break-words text-justify">{{post.content}}</p>
     </mat-card>
   </div>
 </div>
