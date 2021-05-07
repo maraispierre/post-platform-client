@@ -7,7 +7,7 @@ import { Post } from '../models/post';
   providedIn: 'root',
 })
 export class PostService {
-  private BASE_URL = 'http://localhost:3000/post';
+  private BASE_URL = 'https://my-posts-api.herokuapp.com/post';
   constructor(private http: HttpClient) {}
 
   publish(post: Post): Observable<Post> {

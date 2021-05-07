@@ -8,7 +8,7 @@ import { AccessToken } from '../models/access-token';
   providedIn: 'root',
 })
 export class AuthService {
-  private BASE_URL = 'http://localhost:3000/auth';
+  private BASE_URL = 'https://my-posts-api.herokuapp.com/auth';
   constructor(private http: HttpClient) {}
 
   login(credentials: Credentials): Observable<AccessToken> {
